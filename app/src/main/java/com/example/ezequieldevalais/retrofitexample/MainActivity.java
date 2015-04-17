@@ -6,11 +6,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ezequieldevalais.retrofitexample.model.Gitmodel;
+import com.example.ezequieldevalais.retrofitexample.model.Repository;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -27,6 +31,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         callGithub();
+        Repository repo = new Repository(123,"asd");
+        List<Repository> repositories = new ArrayList<Repository>();
+        repositories.add(repo);
+        GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,this);
+        ListView githubRepositories = (ListView)findViewById(R.id.listView);
+        githubRepositories.setAdapter(chapterListAdapter);
+
 
     }
 
@@ -64,7 +75,8 @@ public class MainActivity extends ActionBarActivity {
 
         gitapi git = restAdapter.create(gitapi.class);
         String user = "ezequiel-de-valais";
-        user ="basil2style";
+        user ="dparne";
+
         git.getFeed(user,new Callback<Gitmodel>() {
             public void success(Gitmodel Gitmodel, Response response) {
                 gitHubCalbackSuccess(Gitmodel);
@@ -91,8 +103,10 @@ public class MainActivity extends ActionBarActivity {
         txtGithubId.setText((CharSequence) gitmodel.getId().toString());
         ImageView image = (ImageView) findViewById(R.id.imageGithub);
         //Picasso.with(this).load("https://avatars0.githubusercontent.com/u/5672259?v=3&s=460").into(image);
+        Picasso.with(this)
+                .load(gitmodel.getAvatarUrl())
+                .into(image);
 
-        Picasso.with(this).load(gitmodel.getAvatarUrl()).into(image);
 
     }
 

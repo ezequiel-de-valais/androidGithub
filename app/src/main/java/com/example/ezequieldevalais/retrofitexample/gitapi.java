@@ -4,6 +4,8 @@ package com.example.ezequieldevalais.retrofitexample;
  * Created by EzequielDeValais on 4/16/15.
  */
 
+import com.example.ezequieldevalais.retrofitexample.model.Gitmodel;
+
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
