@@ -40,7 +40,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
+        android:id="@+id/imageGithub"
         android:maxHeight="400dp"
         android:maxWidth="400dp"
         android:minHeight="200dp"
@@ -48,6 +48,6 @@
         android:layout_below="@+id/txtGithubId"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        />
+        android:contentDescription="zarasa" />
 
 </RelativeLayout>

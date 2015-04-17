@@ -5,6 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Array;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -20,8 +26,6 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.v("Eze", "start");
-
         callGithub();
 
     }
@@ -55,31 +59,41 @@ public class MainActivity extends ActionBarActivity {
 
     private void callGithub() {
 
-        Log.v("Eze","seteando adapter");
         String API = "https://api.github.com";
         RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
-        Log.v("Eze","seteado restAdapter");
 
         gitapi git = restAdapter.create(gitapi.class);
         String user = "ezequiel-de-valais";
         user ="basil2style";
-        Log.v("Eze","esperando respuesta");
         git.getFeed(user,new Callback<Gitmodel>() {
             public void success(Gitmodel Gitmodel, Response response) {
-                Log.v("Eze","Github id :"+ Gitmodel.getId()+
-                        "\nurl :"+ Gitmodel.getUrl()+"\navatar url :"+ Gitmodel.getAvatarUrl());
-                //pbar.setVisibility(View.INVISIBLE); //disable progressbar
+                gitHubCalbackSuccess(Gitmodel);
             }
             @Override
             public void failure(RetrofitError error) {
-                Log.v("Eze",error.getMessage());
-                //pbar.setVisibility(View.INVISIBLE); //disable progressbar
+                Log.e("Eze",error.getMessage());
             }
+
         });
-
-
-
     }
 
+    public void gitHubCalbackSuccess(Gitmodel gitmodel){
+        Log.v("Eze","Github id :"+ gitmodel.getId()+
+                "\nurl :"+ gitmodel.getUrl()+"\navatar url :"+ gitmodel.getAvatarUrl());
+
+        Log.v("Eze",gitmodel.getAvatarUrl());
+        TextView txtName
+                = (TextView) findViewById(R.id.txtUserName);
+        txtName.setText((CharSequence) gitmodel.getName());
+        TextView txtUser = (TextView) findViewById(R.id.txtUser);
+        txtUser.setText((CharSequence) gitmodel.getLogin());
+        TextView txtGithubId = (TextView) findViewById(R.id.txtGithubId);
+        txtGithubId.setText((CharSequence) gitmodel.getId().toString());
+        ImageView image = (ImageView) findViewById(R.id.imageGithub);
+        //Picasso.with(this).load("https://avatars0.githubusercontent.com/u/5672259?v=3&s=460").into(image);
+
+        Picasso.with(this).load(gitmodel.getAvatarUrl()).into(image);
+
+    }
 
 }
