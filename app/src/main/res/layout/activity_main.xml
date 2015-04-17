@@ -55,7 +55,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_below="@+id/imageGithub"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+        android:layout_marginTop="43dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

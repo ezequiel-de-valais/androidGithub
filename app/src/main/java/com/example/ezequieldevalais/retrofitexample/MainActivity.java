@@ -31,12 +31,16 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         callGithub();
-        Repository repo = new Repository(123,"asd");
+        Repository repo = new Repository(123,"my First repo");
         List<Repository> repositories = new ArrayList<Repository>();
+        repositories.add(repo);repositories.add(repo);repositories.add(repo);
+        repo = new Repository(64564,"my Second repo");
         repositories.add(repo);
         GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,this);
         ListView githubRepositories = (ListView)findViewById(R.id.listView);
         githubRepositories.setAdapter(chapterListAdapter);
+
+
 
 
     }
