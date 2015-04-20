@@ -58,14 +58,6 @@ public class GithubRepositoryArrayAdapter extends BaseAdapter {
         txtRepositoryId.setText(repository.getId().toString());
 
         return convertView;
-//        LayoutInflater inflater = (LayoutInflater) context
-//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//
-//        View rowView = inflater.inflate(R.layout.repository_list, parent, false);
-//        TextView txtRepositoryName = (TextView) rowView.findViewById(R.id.txtRepositoryName);
-//        TextView txtRepositoryId = (TextView) rowView.findViewById(R.id.txtRepositoryId);
-//        txtRepositoryName.setText(values[position]);
-//        txtRepositoryId.setText(values[position]);
-//        return rowView;
+
     }
 }

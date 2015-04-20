@@ -23,26 +23,21 @@ import retrofit.client.Response;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    private RestAdapter restAdapter;
+    private MainActivity activity = this;
+    private String githubUser = "ezequiel-de-valais";
+    //private String githubUser = "dparne";
+    private String API = "https://api.github.com";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        callGithub();
-        Repository repo = new Repository(123,"my First repo");
-        List<Repository> repositories = new ArrayList<Repository>();
-        repositories.add(repo);repositories.add(repo);repositories.add(repo);
-        repo = new Repository(64564,"my Second repo");
-        repositories.add(repo);
-        GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,this);
-        ListView githubRepositories = (ListView)findViewById(R.id.listView);
-        githubRepositories.setAdapter(chapterListAdapter);
 
-
-
-
+        restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
+        getGithubUser();
+        fillRepositryList();
     }
 
 
@@ -72,16 +67,10 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    private void callGithub() {
-
-        String API = "https://api.github.com";
-        RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
-
+    private void getGithubUser() {
         gitapi git = restAdapter.create(gitapi.class);
-        String user = "ezequiel-de-valais";
-        user ="dparne";
 
-        git.getFeed(user,new Callback<Gitmodel>() {
+        git.getFeed(githubUser,new Callback<Gitmodel>() {
             public void success(Gitmodel Gitmodel, Response response) {
                 gitHubCalbackSuccess(Gitmodel);
             }
@@ -89,7 +78,6 @@ public class MainActivity extends ActionBarActivity {
             public void failure(RetrofitError error) {
                 Log.e("Eze",error.getMessage());
             }
-
         });
     }
 
@@ -111,6 +99,27 @@ public class MainActivity extends ActionBarActivity {
                 .load(gitmodel.getAvatarUrl())
                 .into(image);
 
+    }
+
+    private void fillRepositryList() {
+        gitapi git = restAdapter.create(gitapi.class);
+        git.getRepositories(githubUser, new Callback<List<Repository>>() {
+            @Override
+            public void success(List<Repository> repositories, Response response) {
+                GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,activity);
+                ListView githubRepositories = (ListView)findViewById(R.id.listView);
+                githubRepositories.setAdapter(chapterListAdapter);
+
+                for (Repository repository : repositories) {
+                    Log.v("Eze",repository.getFullName());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Eze",error.getMessage());
+            }
+        });
 
     }
 
