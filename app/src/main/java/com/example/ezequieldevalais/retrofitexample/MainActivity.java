@@ -8,18 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ezequieldevalais.retrofitexample.model.Gitmodel;
-import com.example.ezequieldevalais.retrofitexample.model.Repository;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -30,8 +26,8 @@ public class MainActivity extends ActionBarActivity {
     public static final String EXTRA_MESSAGE = "com.example.ezequieldevalais.retrofitexample.MESSAGE" ;
     private RestAdapter restAdapter;
     private MainActivity activity = this;
-//    private String githubUser = "ezequiel-de-valais";
-    private String githubUser = "dparne";
+    private String githubUser = "ezequiel-de-valais";
+    //private String githubUser = "dparne";
     private String API = "https://api.github.com";
     private String TAG = "Eze";
 
@@ -42,7 +38,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
         getGithubUser();
-        fillRepositryList();
         setRepoButton();
     }
 
@@ -58,32 +53,6 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
 
     private void getGithubUser() {
         gitapi git = restAdapter.create(gitapi.class);
@@ -106,39 +75,18 @@ public class MainActivity extends ActionBarActivity {
         TextView txtName
                 = (TextView) findViewById(R.id.txtUserName);
         txtName.setText((CharSequence) gitmodel.getName());
+
         TextView txtUser = (TextView) findViewById(R.id.txtUser);
         txtUser.setText((CharSequence) gitmodel.getLogin());
         TextView txtGithubId = (TextView) findViewById(R.id.txtGithubId);
         txtGithubId.setText((CharSequence) gitmodel.getId().toString());
         ImageView image = (ImageView) findViewById(R.id.imageGithub);
-        //Picasso.with(this).load("https://avatars0.githubusercontent.com/u/5672259?v=3&s=460").into(image);
         Picasso.with(this)
                 .load(gitmodel.getAvatarUrl())
                 .into(image);
 
     }
 
-    private void fillRepositryList() {
-        gitapi git = restAdapter.create(gitapi.class);
-        git.getRepositories(githubUser, new Callback<List<Repository>>() {
 
-            @Override
-            public void success(List<Repository> repositories, Response response) {
-                GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,activity);
-                ListView githubRepositories = (ListView)findViewById(R.id.listView);
-                githubRepositories.setAdapter(chapterListAdapter);
-
-                for (Repository repository : repositories) {
-                    Log.v(TAG,repository.getFullName());
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(TAG,error.getMessage());
-            }
-        });
-
-    }
 
 }

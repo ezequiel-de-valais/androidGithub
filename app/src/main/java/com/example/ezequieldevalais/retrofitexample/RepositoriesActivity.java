@@ -26,22 +26,18 @@ public class RepositoriesActivity extends ActionBarActivity {
     private RestAdapter restAdapter;
     private String userName;
     ActionBarActivity activity= this;
+    private Intent intent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repositories);
-
-        Intent intent = getIntent();
+        intent = getIntent();
         restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
 
-        userName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        Log.v(TAG,"in repository activity, message:" + userName);
-        TextView txtUserName = (TextView) findViewById(R.id.txtUserName);
-        txtUserName.setText(userName);
+        setName();
         fillRepositryList();
-
 
     }
 
@@ -88,7 +84,13 @@ public class RepositoriesActivity extends ActionBarActivity {
                 Log.e(TAG,error.getMessage());
             }
         });
+    }
 
+    public void setName(){
+        userName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        Log.v(TAG,"in repository activity, message:" + userName);
+        TextView txtUserName = (TextView) findViewById(R.id.txtUserName);
+        txtUserName.setText(userName);
     }
 
 }
