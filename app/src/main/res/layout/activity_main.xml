@@ -41,10 +41,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageGithub"
-        android:maxHeight="400dp"
-        android:maxWidth="400dp"
-        android:minHeight="200dp"
-        android:minWidth="200dp"
+        android:maxHeight="200dp"
+        android:maxWidth="200dp"
+        android:minHeight="150dp"
+        android:minWidth="150dp"
         android:layout_below="@+id/txtGithubId"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
@@ -57,6 +57,16 @@
         android:layout_below="@+id/imageGithub"
         android:layout_marginTop="43dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Repos"
+        android:id="@+id/buttonRepos"
+        android:layout_above="@+id/imageGithub"
+        android:layout_alignRight="@+id/listView"
+        android:layout_alignEnd="@+id/listView" />
 
 </RelativeLayout>

@@ -1,10 +1,14 @@
 package com.example.ezequieldevalais.retrofitexample;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,23 +27,37 @@ import retrofit.client.Response;
 
 
 public class MainActivity extends ActionBarActivity {
+    public static final String EXTRA_MESSAGE = "com.example.ezequieldevalais.retrofitexample.MESSAGE" ;
     private RestAdapter restAdapter;
     private MainActivity activity = this;
-    private String githubUser = "ezequiel-de-valais";
-    //private String githubUser = "dparne";
+//    private String githubUser = "ezequiel-de-valais";
+    private String githubUser = "dparne";
     private String API = "https://api.github.com";
+    private String TAG = "Eze";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
         getGithubUser();
         fillRepositryList();
+        setRepoButton();
     }
 
+    private void setRepoButton() {
+        Button buttonRepos = (Button) this.findViewById(R.id.buttonRepos);
+        buttonRepos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, RepositoriesActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, githubUser);
+                startActivity(intent);
+
+            }
+        });
+    }
 
 
     @Override
@@ -76,16 +94,15 @@ public class MainActivity extends ActionBarActivity {
             }
             @Override
             public void failure(RetrofitError error) {
-                Log.e("Eze",error.getMessage());
+                Log.e(TAG,error.getMessage());
             }
         });
     }
 
     public void gitHubCalbackSuccess(Gitmodel gitmodel){
-        Log.v("Eze","Github id :"+ gitmodel.getId()+
-                "\nurl :"+ gitmodel.getUrl()+"\navatar url :"+ gitmodel.getAvatarUrl());
+        Log.v(TAG, gitmodel.getId()+ "\n"+ gitmodel.getUrl()+ "\n" + gitmodel.getAvatarUrl());
 
-        Log.v("Eze",gitmodel.getAvatarUrl());
+        Log.v(TAG,gitmodel.getAvatarUrl());
         TextView txtName
                 = (TextView) findViewById(R.id.txtUserName);
         txtName.setText((CharSequence) gitmodel.getName());
@@ -104,6 +121,7 @@ public class MainActivity extends ActionBarActivity {
     private void fillRepositryList() {
         gitapi git = restAdapter.create(gitapi.class);
         git.getRepositories(githubUser, new Callback<List<Repository>>() {
+
             @Override
             public void success(List<Repository> repositories, Response response) {
                 GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,activity);
@@ -111,13 +129,13 @@ public class MainActivity extends ActionBarActivity {
                 githubRepositories.setAdapter(chapterListAdapter);
 
                 for (Repository repository : repositories) {
-                    Log.v("Eze",repository.getFullName());
+                    Log.v(TAG,repository.getFullName());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("Eze",error.getMessage());
+                Log.e(TAG,error.getMessage());
             }
         });
 
