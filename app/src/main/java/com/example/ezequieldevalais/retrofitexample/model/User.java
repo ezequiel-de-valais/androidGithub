@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by EzequielDeValais on 4/16/15.
  */
-public class Gitmodel {
+public class User {
 
 //I created this using http://www.jsonschema2pojo.org/
 //Note that not every model can be created using jsonschema2pojo

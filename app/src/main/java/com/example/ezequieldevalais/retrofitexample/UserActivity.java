@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.ezequieldevalais.retrofitexample.model.Gitmodel;
+import com.example.ezequieldevalais.retrofitexample.model.User;
 import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Picasso;
-
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,8 +29,7 @@ public class UserActivity extends ActionBarActivity {
     public static final String EXTRA_MESSAGE = "com.example.ezequieldevalais.retrofitexample.MESSAGE";
     private RestAdapter restAdapter;
     private UserActivity activity = this;
-    //private String githubUser = "ezequiel-de-valais";
-    private static String githubUser = null;
+    public static String githubUser = null;
     private String API = "https://api.github.com";
     private Intent intent;
 
@@ -73,20 +72,26 @@ public class UserActivity extends ActionBarActivity {
     private void getGithubUser() {
         githubAPI git = restAdapter.create(githubAPI.class);
 
-        git.getUser(githubUser, new Callback<Gitmodel>() {
-            public void success(Gitmodel Gitmodel, Response response) {
+        git.getUser(githubUser, new Callback<User>() {
+            public void success(User Gitmodel, Response response) {
                 progressWheel.stopSpinning();
                 gitHubCalbackSuccess(Gitmodel);
             }
 
             @Override
             public void failure(RetrofitError error) {
+
                 Log.e(TAG, error.getMessage());
+                Toast toast = Toast.makeText(activity, "User \"" + githubUser + "\" does not exist" ,Toast.LENGTH_SHORT);
+                githubUser = null;
+                progressWheel.stopSpinning();
+                toast.show();
+                finish();
             }
         });
     }
 
-    public void gitHubCalbackSuccess(Gitmodel gitmodel){
+    public void gitHubCalbackSuccess(User gitmodel){
         txtName.setText(gitmodel.getName());
         txtUser.setText(gitmodel.getLogin());
         txtGithubId.setText(gitmodel.getId().toString());
