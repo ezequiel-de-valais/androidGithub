@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ezequieldevalais.retrofitexample.model.Repository;
+import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.List;
@@ -49,31 +50,34 @@ public class RepositoriesActivity extends ActionBarActivity {
 
     private void fillRepositryList() {
         githubAPI git = restAdapter.create(githubAPI.class);
-        git.getRepositories(userName, new Callback<List<Repository>>() {
-
-            @Override
-            public void success(List<Repository> repositories, Response response) {
-                GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,activity);
-                githubRepositories = (ListView)findViewById(R.id.listRepositories);
-                progressWheel.stopSpinning();
-                githubRepositories.setAdapter(chapterListAdapter);
-
-                for (Repository repository : repositories) {
-                    Log.v(TAG,repository.getFullName());
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(TAG,error.getMessage());
-            }
-        });
+        git.getRepositories(userName,new RepositoriesCallback());
     }
 
     public void setName(){
-        userName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        userName = intent.getStringExtra(UserActivity.EXTRA_MESSAGE);
         Log.v(TAG,"in repository activity, message:" + userName);
         txtUserName.setText(userName);
     }
 
+
+    private class RepositoriesCallback implements Callback<List<Repository>> {
+
+        @Override
+        public void success(List<Repository> repositories, Response response) {
+
+            GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,activity);
+            githubRepositories = (ListView)findViewById(R.id.listRepositories);
+            progressWheel.stopSpinning();
+            githubRepositories.setAdapter(chapterListAdapter);
+
+            for (Repository repository : repositories) {
+                Log.v(TAG,repository.getFullName());
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG,error.getMessage());
+        }
+    }
 }

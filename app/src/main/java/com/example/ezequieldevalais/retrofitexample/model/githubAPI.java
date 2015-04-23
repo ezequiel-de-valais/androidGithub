@@ -1,4 +1,4 @@
-package com.example.ezequieldevalais.retrofitexample;
+package com.example.ezequieldevalais.retrofitexample.model;
 
 /**
  * Created by EzequielDeValais on 4/16/15.

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ezequieldevalais.retrofitexample.model.Gitmodel;
+import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Picasso;
 
@@ -24,16 +25,17 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends ActionBarActivity {
+public class UserActivity extends ActionBarActivity {
     public static final String EXTRA_MESSAGE = "com.example.ezequieldevalais.retrofitexample.MESSAGE";
     private RestAdapter restAdapter;
-    private MainActivity activity = this;
-    private String githubUser = "ezequiel-de-valais";
-    //private String githubUser = "dparne";
+    private UserActivity activity = this;
+    //private String githubUser = "ezequiel-de-valais";
+    private static String githubUser = null;
     private String API = "https://api.github.com";
+    private Intent intent;
+
+
     private String TAG = "Eze";
-
-
     @InjectView(R.id.txtUserName) TextView txtName;
     @InjectView(R.id.txtUser) TextView txtUser;
     @InjectView(R.id.txtGithubId) TextView txtGithubId;
@@ -44,7 +46,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user);
+        intent = getIntent();
+        if(githubUser == null){
+            githubUser = intent.getStringExtra(SelectUserActivity.EXTRA_MESSAGE);
+        }
+        Log.i(TAG, "github user : "+ githubUser);
+
         ProgressWheel wheel = new ProgressWheel(this);
         wheel.setBarColor(Color.BLUE);
 
