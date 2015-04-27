@@ -13,7 +13,7 @@ import butterknife.OnClick;
 
 public class SelectUserActivity extends ActionBarActivity {
 
-    private SelectUserActivity activity= this;
+    public static SelectUserActivity activity;
     public static final String EXTRA_MESSAGE="com.example.ezequieldevalais.retrofitexample.MESSAGE";
     @InjectView(R.id.txtGithubUser) TextView  txtGithubUser;
 
@@ -21,7 +21,7 @@ public class SelectUserActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user);
-
+        activity = this;
         ButterKnife.inject(this);
     }
 

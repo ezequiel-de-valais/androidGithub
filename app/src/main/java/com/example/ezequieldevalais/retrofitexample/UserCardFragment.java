@@ -28,6 +28,8 @@ package com.example.ezequieldevalais.retrofitexample;
 
         import com.example.ezequieldevalais.retrofitexample.model.User;
         import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
+        import com.nispok.snackbar.Snackbar;
+        import com.nispok.snackbar.SnackbarManager;
         import com.pnikosis.materialishprogress.ProgressWheel;
         import com.squareup.picasso.Picasso;
 
@@ -100,8 +102,11 @@ public class UserCardFragment extends CardFragment {
             public void failure(RetrofitError error) {
 
                 Log.e(TAG, error.getMessage());
-                githubUser = null;
                 progressWheel.stopSpinning();
+                SnackbarManager.show(
+                        Snackbar.with(getActivity())
+                                .text("User \'"+ githubUser +"\' does not exist"), SelectUserActivity.activity);
+                githubUser = null;
                 getActivity().finish();
             }
         });

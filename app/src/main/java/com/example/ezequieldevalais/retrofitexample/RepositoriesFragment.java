@@ -1,19 +1,4 @@
 package com.example.ezequieldevalais.retrofitexample;
-/*
- * Copyright (C) 2013 Andreas Stuetz <andreas.stuetz@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 
 import android.app.Activity;
@@ -53,9 +38,6 @@ public class RepositoriesFragment extends CardFragment {
 
 
 
-    private int position;
-//    private RestAdapter restAdapter;
-
 
     public static CardFragment newInstance(String username) {
         CardFragment f = new RepositoriesFragment();
@@ -77,8 +59,6 @@ public class RepositoriesFragment extends CardFragment {
         View rootView = inflater.inflate(R.layout.fragment_repositories_card,container,false);
         ButterKnife.inject(this, rootView);
         ViewCompat.setElevation(rootView, 50);
-//        userName = "ezequiel-de-valais";
-//        userName = "dpare";
         txtUserName.setText(userName);
         restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
         fillRepositryList();
@@ -100,7 +80,6 @@ public class RepositoriesFragment extends CardFragment {
 
             GithubRepositoryArrayAdapter chapterListAdapter = new GithubRepositoryArrayAdapter(repositories,activity);
             githubRepositories = (ListView)activity.findViewById(R.id.listRepositories);
-//            progressWheel.stopSpinning();
             githubRepositories.setAdapter(chapterListAdapter);
 
             for (Repository repository : repositories) {
