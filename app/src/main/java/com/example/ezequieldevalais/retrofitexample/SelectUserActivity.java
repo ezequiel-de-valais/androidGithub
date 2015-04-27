@@ -27,9 +27,9 @@ public class SelectUserActivity extends ActionBarActivity {
 
     @OnClick(R.id.button)
     public void loadRepositoriesView(View v){
-        Intent intent = new Intent(activity, UserActivity.class);
+        Intent intent = new Intent(activity, GithubUserActivity.class);
         intent.putExtra(EXTRA_MESSAGE, txtGithubUser.getText().toString());
-        UserActivity.githubUser = null;
+        GithubUserActivity.userName = null;
         startActivity(intent);
     }
 

@@ -41,19 +41,15 @@ import retrofit.client.Response;
 
 public class RepositoriesFragment extends CardFragment {
 
-    private static final String ARG_POSITION = "position";
     private static final String ARG_USERNAME = "username";
 
-    private static String name;
     private static final String TAG = "Eze" ;
     private static final String API = "https://api.github.com";
     private RestAdapter restAdapter;
     private String userName ;
-//    private Intent intent;
+
     @InjectView(R.id.txtUserName) TextView txtUserName;
     @InjectView(R.id.listRepositories) ListView githubRepositories;
-
-    public static String githubUser = null;
 
 
 
@@ -61,10 +57,9 @@ public class RepositoriesFragment extends CardFragment {
 //    private RestAdapter restAdapter;
 
 
-    public static CardFragment newInstance(int position, String username) {
+    public static CardFragment newInstance(String username) {
         CardFragment f = new RepositoriesFragment();
         Bundle b = new Bundle();
-        b.putInt(ARG_POSITION, position);
         b.putString(ARG_USERNAME, username);
 
         f.setArguments(b);
@@ -74,7 +69,6 @@ public class RepositoriesFragment extends CardFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        position = getArguments().getInt(ARG_POSITION);
         userName = getArguments().getString(ARG_USERNAME);
     }
 

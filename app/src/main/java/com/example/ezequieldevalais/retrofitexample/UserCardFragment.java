@@ -16,7 +16,7 @@ package com.example.ezequieldevalais.retrofitexample;
  */
 
 
-        import android.content.Intent;
+        import android.graphics.Color;
         import android.os.Bundle;
         import android.support.v4.view.ViewCompat;
         import android.util.Log;
@@ -25,10 +25,10 @@ package com.example.ezequieldevalais.retrofitexample;
         import android.view.ViewGroup;
         import android.widget.ImageView;
         import android.widget.TextView;
-        import android.widget.Toast;
 
         import com.example.ezequieldevalais.retrofitexample.model.User;
         import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
+        import com.pnikosis.materialishprogress.ProgressWheel;
         import com.squareup.picasso.Picasso;
 
         import butterknife.ButterKnife;
@@ -40,14 +40,13 @@ package com.example.ezequieldevalais.retrofitexample;
 
 public class UserCardFragment extends CardFragment {
 
-    private static final String ARG_POSITION = "position";
     private static final String ARG_USERNAME = "username";
-    private static String name;
 
     @InjectView(R.id.txtUserName) TextView txtName;
     @InjectView(R.id.txtUser) TextView txtUser;
     @InjectView(R.id.txtGithubId) TextView txtGithubId;
     @InjectView(R.id.imageGithub) ImageView imageGithub;
+    @InjectView(R.id.progress_wheel) ProgressWheel progressWheel;
 
     public static String githubUser = null;
 
@@ -55,16 +54,12 @@ public class UserCardFragment extends CardFragment {
     private String TAG = "Eze";
 
 
-    private int position;
     private RestAdapter restAdapter;
-    private String userName;
 
 
-    public static CardFragment newInstance(int position, String username) {
-        //name = "Ezequiel";
+    public static CardFragment newInstance(String username) {
         CardFragment f = new UserCardFragment();
         Bundle b = new Bundle();
-        b.putInt(ARG_POSITION, position);
         b.putString(ARG_USERNAME, username);
         f.setArguments(b);
         return f;
@@ -74,7 +69,6 @@ public class UserCardFragment extends CardFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        position = getArguments().getInt(ARG_POSITION);
         githubUser = getArguments().getString(ARG_USERNAME);
     }
 
@@ -83,9 +77,10 @@ public class UserCardFragment extends CardFragment {
         View rootView = inflater.inflate(R.layout.fragment_user_card,container,false);
         ButterKnife.inject(this, rootView);
         ViewCompat.setElevation(rootView, 50);
-        txtName.setText("CARD anotherSuperAwesomeCard "+position+ "  -  " + name);
-        //githubUser = "ezequiel-de-valais";
 
+
+        ProgressWheel wheel = new ProgressWheel(getActivity());
+        wheel.setBarColor(Color.BLUE);
         restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
         getGithubUser();
         return rootView;
@@ -97,7 +92,7 @@ public class UserCardFragment extends CardFragment {
 
         git.getUser(githubUser, new Callback<User>() {
             public void success(User Gitmodel, Response response) {
-//                progressWheel.stopSpinning();
+                progressWheel.stopSpinning();
                 gitHubCalbackSuccess(Gitmodel);
             }
 
@@ -105,11 +100,9 @@ public class UserCardFragment extends CardFragment {
             public void failure(RetrofitError error) {
 
                 Log.e(TAG, error.getMessage());
-//                Toast toast = Toast.makeText(activity, "User \"" + githubUser + "\" does not exist" ,Toast.LENGTH_SHORT);
                 githubUser = null;
-//                progressWheel.stopSpinning();
-//                toast.show();
-//                finish();
+                progressWheel.stopSpinning();
+                getActivity().finish();
             }
         });
     }
@@ -118,7 +111,6 @@ public class UserCardFragment extends CardFragment {
         txtName.setText(gitmodel.getName());
         txtUser.setText(gitmodel.getLogin());
         txtGithubId.setText(gitmodel.getId().toString());
-//        buttonRepos.setVisibility(View.VISIBLE);
         Picasso.with(this.getActivity())
                 .load(gitmodel.getAvatarUrl())
                 .into(imageGithub);
