@@ -45,7 +45,7 @@ public class GithubUserActivity extends ActionBarActivity {
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
         pager.setCurrentItem(0);
-        tabs.setBackgroundColor(Color.rgb(0,204,204));
+        //tabs.setBackgroundColor(Color.rgb(0,204,204));
         tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
             @Override
             public void onTabReselected(int position) {
@@ -79,10 +79,13 @@ public class GithubUserActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 1){
-                return RepositoriesFragment.newInstance(userName);
+            CardFragment card;
+            if (position == 1) {
+                card =  RepositoriesFragment.newInstance(userName);
+            } else {
+                card = UserCardFragment.newInstance(userName);
             }
-            return UserCardFragment.newInstance(userName);
+            return card;
         }
     }
 
