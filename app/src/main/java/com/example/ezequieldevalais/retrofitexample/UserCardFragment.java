@@ -1,5 +1,7 @@
 package com.example.ezequieldevalais.retrofitexample;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ezequieldevalais.retrofitexample.model.Constants;
 import com.example.ezequieldevalais.retrofitexample.model.User;
 import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
 import com.nispok.snackbar.Snackbar;
@@ -27,21 +30,17 @@ import retrofit.client.Response;
 public class UserCardFragment extends CardFragment {
 
     private static final String ARG_USERNAME = "username";
+    private static final String API = Constants.githubApi;
+    private static final String TAG = Constants.TAG;
+    //private static final int RESULT_OK = 1 ;
+    private static String githubUser = null;
+    private RestAdapter restAdapter;
 
     @InjectView(R.id.txtUserName) TextView txtName;
     @InjectView(R.id.txtUser) TextView txtUser;
     @InjectView(R.id.txtGithubId) TextView txtGithubId;
     @InjectView(R.id.imageGithub) ImageView imageGithub;
     @InjectView(R.id.progress_wheel) ProgressWheel progressWheel;
-
-    public static String githubUser = null;
-
-    private String API = "https://api.github.com";
-    private String TAG = "Eze";
-
-
-    private RestAdapter restAdapter;
-
 
     public static CardFragment newInstance(String username) {
         CardFragment f = new UserCardFragment();
@@ -54,7 +53,6 @@ public class UserCardFragment extends CardFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(TAG, "DVSVDSVDVDVDVV FVFFVFVVF ");
         githubUser = getArguments().getString(ARG_USERNAME);
     }
 
@@ -72,7 +70,6 @@ public class UserCardFragment extends CardFragment {
         return rootView;
     }
 
-
     private void getGithubUser() {
         githubAPI git = restAdapter.create(githubAPI.class);
 
@@ -87,16 +84,16 @@ public class UserCardFragment extends CardFragment {
 
                 Log.e(TAG, error.getMessage());
                 progressWheel.stopSpinning();
-                SnackbarManager.show(
-                        Snackbar.with(getActivity())
-                                .text("User \'"+ githubUser +"\' does not exist"), SelectUserActivity.activity);
-                githubUser = null;
-                getActivity().finish();
+                Activity activity = getActivity();
+                Intent output = new Intent();
+                activity.setResult(getActivity().RESULT_CANCELED, output);
+                activity.finish();
+
             }
         });
     }
 
-    public void gitHubCalbackSuccess(User gitmodel){
+    private void gitHubCalbackSuccess(User gitmodel){
         txtName.setText(gitmodel.getName());
         txtUser.setText(gitmodel.getLogin());
         txtGithubId.setText(gitmodel.getId().toString());

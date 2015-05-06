@@ -1,6 +1,7 @@
 package com.example.ezequieldevalais.retrofitexample;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,21 +14,22 @@ import android.util.TypedValue;
 import android.view.Menu;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.example.ezequieldevalais.retrofitexample.model.Constants;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
 public class GithubUserActivity extends ActionBarActivity {
-    @InjectView(R.id.tabs)
-    PagerSlidingTabStrip tabs;
-    @InjectView(R.id.pager)
-    ViewPager pager;
+    @InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
+    @InjectView(R.id.pager) ViewPager pager;
 
     private MyPagerAdapter adapter;
     private Intent intent;
-    public static String userName;
-    private String TAG = "Eze";
+    private static String userName ="";
+    private static final String TAG = Constants.TAG;
+    private static final String INTENT_RECEIVE_GITHUB_USER= Constants.INTENT_GITHUB_USER;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,10 @@ public class GithubUserActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         intent = getIntent();
-        userName = intent.getStringExtra(SelectUserActivity.EXTRA_MESSAGE);
-
+        userName = intent.getStringExtra(INTENT_RECEIVE_GITHUB_USER);
+        tabs.setTextColor(Color.WHITE);
+        tabs.setIndicatorColor(Color.WHITE);
+        tabs.setBackgroundColor(Color.GRAY);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
@@ -45,7 +49,6 @@ public class GithubUserActivity extends ActionBarActivity {
                 .getDisplayMetrics());
         pager.setPageMargin(pageMargin);
         pager.setCurrentItem(0);
-        //tabs.setBackgroundColor(Color.rgb(0,204,204));
         tabs.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
             @Override
             public void onTabReselected(int position) {

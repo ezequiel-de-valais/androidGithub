@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/androidGithub.iml" filepath="$PROJECT_DIR$/androidGithub.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/retrofitExample.iml" filepath="$PROJECT_DIR$/retrofitExample.iml" />
     </modules>
   </component>
 </project>
-

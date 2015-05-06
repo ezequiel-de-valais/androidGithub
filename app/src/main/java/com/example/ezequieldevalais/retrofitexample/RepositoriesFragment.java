@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ezequieldevalais.retrofitexample.model.Constants;
 import com.example.ezequieldevalais.retrofitexample.model.Repository;
 import com.example.ezequieldevalais.retrofitexample.model.githubAPI;
 
@@ -27,17 +28,13 @@ import retrofit.client.Response;
 public class RepositoriesFragment extends CardFragment {
 
     private static final String ARG_USERNAME = "username";
-
-    private static final String TAG = "Eze" ;
-    private static final String API = "https://api.github.com";
+    private static final String TAG = Constants.TAG ;
+    private static final String API = Constants.githubApi;
     private RestAdapter restAdapter;
     private String userName ;
 
     @InjectView(R.id.txtUserName) TextView txtUserName;
     @InjectView(R.id.listRepositories) ListView githubRepositories;
-
-
-
 
     public static CardFragment newInstance(String username) {
         CardFragment f = new RepositoriesFragment();
@@ -73,7 +70,6 @@ public class RepositoriesFragment extends CardFragment {
     }
 
     private class RepositoriesCallback implements Callback<List<Repository>> {
-
         @Override
         public void success(List<Repository> repositories, Response response) {
             Activity activity= getActivity();

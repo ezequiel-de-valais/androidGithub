@@ -4,6 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_repositories">repositories</string>
-    <string name="title_activity_select_user">SelectUserActivity</string>
+    <string name="title_activity_select_user">Github User</string>
     <string name="action_contact">zarassa</string>
 </resources>
